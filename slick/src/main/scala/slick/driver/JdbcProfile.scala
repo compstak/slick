@@ -88,7 +88,6 @@ trait JdbcProfile extends SqlProfile with JdbcActionComponent
     implicit def actionBasedSQLInterpolation(s: StringContext) = new ActionBasedSQLInterpolation(s)
   }
 
-  @deprecated("Use 'api' instead of 'simple' or 'Implicit' to import the new API", "3.0")
   val simple: SimpleQL = new SimpleQL {}
   @deprecated("Use 'api' instead of 'simple' or 'Implicit' to import the new API", "3.0")
   lazy val Implicit: Implicits = simple

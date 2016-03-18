@@ -331,7 +331,6 @@ trait DatabaseComponent { self =>
     /** Run the supplied function with a new session and automatically close the session at the end.
       * Exceptions thrown while closing the session are propagated, but only if the code block using the
       * session terminated normally. Otherwise the first exception wins. */
-    @deprecated("Use the new Action-based API instead", "3.0")
     def withSession[T](f: Session => T): T = {
       val s = createSession()
       var ok = false
@@ -353,11 +352,10 @@ trait DatabaseComponent { self =>
       * The session is stored in a dynamic (inheritable thread-local) variable
       * which can be accessed with the implicit function in
       * Database.dynamicSession. */
-    @deprecated("Use the new Action-based API instead", "3.0")
+    
     def withDynSession[T](f: => T): T = withSession { s: Session => withDynamicSession(s)(f) }
 
     /** Run the supplied function with a new session in a transaction and automatically close the session at the end. */
-    @deprecated("Use the new Action-based API instead", "3.0")
     def withTransaction[T](f: Session => T): T = withSession { s => s.withTransaction(f(s)) }
 
     /** Run the supplied thunk with a new session in a transaction and
@@ -365,20 +363,20 @@ trait DatabaseComponent { self =>
       * The session is stored in a dynamic (inheritable thread-local) variable
       * which can be accessed with the implicit function in
       * Database.dynamicSession. */
-    @deprecated("Use the new Action-based API instead", "3.0")
+    
     def withDynTransaction[T](f: => T): T = withDynSession { Database.dynamicSession.withTransaction(f) }
   }
 
   private[this] val dyn = new DynamicVariable[Session](null)
 
   /** Run a block of code with the specified `Session` bound to the thread-local `dynamicSession`. */
-  @deprecated("Use the new Action-based API instead", "3.0")
+  
   protected def withDynamicSession[T](s: Session)(f: => T): T = dyn.withValue(s)(f)
 
   /** Factory methods for creating `Database` instances. */
   trait DatabaseFactoryDef {
     /** An implicit function that returns the thread-local session in a withSession block. */
-    @deprecated("Use the new Action-based API instead", "3.0")
+    
     implicit def dynamicSession: Session = {
       val s = dyn.value
       if(s eq null)
@@ -394,17 +392,17 @@ trait DatabaseComponent { self =>
 
     /** Call this method within a `withTransaction` call to roll back the current
       * transaction after `withTransaction` returns. */
-    @deprecated("Use the new Action-based API instead", "3.0")
+    
     def rollback(): Unit
 
     /** Run the supplied function within a transaction. If the function throws an Exception
       * or the session's `rollback()` method is called, the transaction is rolled back,
       * otherwise it is committed when the function returns. */
-    @deprecated("Use the new Action-based API instead", "3.0")
+    
     def withTransaction[T](f: => T): T
 
     /** Use this Session as the `dynamicSession` for running the supplied thunk. */
-    @deprecated("Use the new Action-based API instead", "3.0")
+    
     def asDynamicSession[T](f: => T): T = withDynamicSession[T](this.asInstanceOf[Session])(f)
 
     /** Force an actual database session to be opened. Slick sessions are lazy, so you do not

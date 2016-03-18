@@ -348,7 +348,7 @@ trait JdbcBackend extends RelationalBackend {
      * Create a new Slick Session wrapping the same JDBC connection, but using the given values as defaults for
      * resultSetType, resultSetConcurrency and resultSetHoldability.
      */
-    @deprecated("Use the new Action-based API instead", "3.0")
+    
     final def forParameters(rsType: ResultSetType = resultSetType, rsConcurrency: ResultSetConcurrency = resultSetConcurrency,
                       rsHoldability: ResultSetHoldability = resultSetHoldability): Session =
       internalForParameters(rsType, rsConcurrency, rsHoldability, null, 0)
