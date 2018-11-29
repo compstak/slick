@@ -13,7 +13,7 @@ import de.johoop.testngplugin.TestNGPlugin._
 
 object SlickBuild extends Build {
 
-  val slickVersion = "3.0.4-cs-1"
+  val slickVersion = "3.0.4-cs-2"
   val slickExtensionsVersion = "3.0.0" // Slick extensions version for links in the manual
   val binaryCompatSlickVersion = "3.0.0" // Slick base version for binary compatibility checks
   val scalaVersions = Seq("2.11.6")
@@ -116,10 +116,9 @@ object SlickBuild extends Build {
     libraryDependencies ++= Dependencies.mainDependencies,
     logBuffered := false,
     repoKind <<= (version)(v => if(v.trim.endsWith("SNAPSHOT")) "snapshots" else "releases"),
-    //publishTo <<= (repoKind)(r => Some(Resolver.file("test", file("c:/temp/repo/"+r)))),
     publishTo <<= (repoKind){
-      case "snapshots" => Some("snapshots" at "https://nexus.cs-int-592.com/repository/maven-snapshots")
-      case "releases" =>  Some("releases"  at "https://nexus.cs-int-592.com/repository/maven-releases")
+      case "snapshots" => Some("CompStak Snapshots" at "s3://compstak-maven.s3.amazonaws.com/snapshots")
+      case "releases" =>  Some("CompStak Snapshots" at "s3://compstak-maven.s3.amazonaws.com/releases")
     },
     publishMavenStyle := true,
     publishArtifact in Test := false,
